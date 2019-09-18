@@ -1,8 +1,6 @@
-package br.robocup;
+package ufrpe;
 
 import java.net.UnknownHostException;
-
-import com.badlogic.gdx.ai.btree.*;
 
 public class Main {
 	public static void main(String[] args) throws UnknownHostException {
@@ -12,6 +10,5 @@ public class Main {
 		teamA.launchTeamAndServer();
 		teamB.launchTeam();
 		
-		BehaviorTree<Integer> teste;
 	}
 }

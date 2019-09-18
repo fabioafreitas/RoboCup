@@ -1,4 +1,4 @@
-package br.robocup;
+package ufrpe;
 
 import easy_soccer_lib.AbstractTeam;
 import easy_soccer_lib.PlayerCommander;

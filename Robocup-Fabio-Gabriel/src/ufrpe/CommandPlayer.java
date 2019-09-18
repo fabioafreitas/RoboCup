@@ -1,4 +1,4 @@
-package br.robocup;
+package ufrpe;
 
 import easy_soccer_lib.PlayerCommander;
 import easy_soccer_lib.perception.FieldPerception;
