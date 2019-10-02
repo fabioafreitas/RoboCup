@@ -1,14 +1,10 @@
-package ufrpe;
+package exemplo;
 
 import java.net.UnknownHostException;
 
 public class Main {
 	public static void main(String[] args) throws UnknownHostException {
-		CommandTeam teamA = new CommandTeam("A");
-		CommandTeam teamB = new CommandTeam("B");
-		
+		CommandTeam teamA = new CommandTeam("RevoltzTeam");
 		teamA.launchTeamAndServer();
-		teamB.launchTeam();
-		
 	}
 }
