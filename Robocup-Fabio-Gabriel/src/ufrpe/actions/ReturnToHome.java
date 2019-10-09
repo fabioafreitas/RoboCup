@@ -1,7 +1,7 @@
-package ufrpe.bt_team.actions;
+package ufrpe.actions;
 
-import ufrpe.behavior_tree.BTNode;
-import ufrpe.behavior_tree.BTStatus;
+import behavior_tree.BTNode;
+import behavior_tree.BTStatus;
 
 public class ReturnToHome extends BTNode<BTreePlayer> {
 

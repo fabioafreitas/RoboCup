@@ -5,12 +5,12 @@ import easy_soccer_lib.PlayerCommander;
 
 public class CommandTeam extends AbstractTeam {
 	public CommandTeam(String nomeDoTime) {
-		super(nomeDoTime, 8, false);
+		super(nomeDoTime, 4, false);
 	}
 
 	@Override
 	protected void launchPlayer(int ag, PlayerCommander comm) {
-		System.out.println("Player lançado!");
+		System.out.println("Player lanï¿½ado!");
 		CommandPlayer p = new CommandPlayer(comm);
 		p.start();
 	}

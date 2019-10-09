@@ -1,9 +1,9 @@
-package ufrpe.bt_team;
+package ufrpe;
 
 import java.net.UnknownHostException;
 
 
-public class MainBT {
+public class Main {
 
 	public static void main(String[] args) throws UnknownHostException {
 		BTreeTeam team1 = new BTreeTeam("A");

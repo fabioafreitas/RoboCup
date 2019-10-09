@@ -1,4 +1,4 @@
-package ufrpe.behavior_tree;
+package behavior_tree;
 
 
 public abstract class BTNode<T> {

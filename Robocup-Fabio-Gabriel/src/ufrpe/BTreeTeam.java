@@ -1,9 +1,9 @@
-package ufrpe.bt_team;
+package ufrpe;
 
 import easy_soccer_lib.AbstractTeam;
 import easy_soccer_lib.PlayerCommander;
 import easy_soccer_lib.utils.Vector2D;
-import ufrpe.bt_team.actions.BTreePlayer;
+import ufrpe.actions.BTreePlayer;
 
 
 /**
@@ -12,7 +12,7 @@ import ufrpe.bt_team.actions.BTreePlayer;
 public class BTreeTeam extends AbstractTeam {
 
 	public BTreeTeam(String suffix) {
-		super("BT-Team-" + suffix, 2, false);
+		super("Macrom"+ suffix, 2, true);
 	}
 
 	@Override
@@ -21,13 +21,18 @@ public class BTreeTeam extends AbstractTeam {
 
 		switch (ag) {
 		case 0:
-			x = -37.0d;
-			y = -20.0d;
+			x = -50.0d;
+			y = -0.0d;
 			break;
 		case 1:
-			x = -37.0d;
-			y = 20.0d;
+			x = -30.0d;
+			y = 0.0d;
 			break;
+		case 2:
+			x = -30.0d;
+			y = -25.0d;
+			break;
+
 		default:
 			x = -37.0d;
 			y = 0;
