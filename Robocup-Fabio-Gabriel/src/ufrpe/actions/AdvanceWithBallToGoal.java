@@ -1,15 +1,16 @@
 package ufrpe.actions;
 
-import behavior_tree.BTNode;
-import behavior_tree.BTStatus;
+import ufrpe.behavior_tree.BTNode;
+import ufrpe.behavior_tree.BTStatus;
 import easy_soccer_lib.utils.Vector2D;
+import ufrpe.BehaviorTreePlayer;
 
 
-public class AdvanceWithBallToGoal extends BTNode<BTreePlayer> {
+public class AdvanceWithBallToGoal extends BTNode<BehaviorTreePlayer> {
 
 	@Override
-	public BTStatus tick(BTreePlayer agent) {
-		Vector2D ballPos = agent.fieldPerc.getBall().getPosition();
+	public BTStatus tick(BehaviorTreePlayer agent) {
+		Vector2D ballPos = agent.getFieldPerc().getBall().getPosition();
 		
 		//condicao ruim extrema: longe da bola
 		if (!agent.isCloseTo(ballPos, 10.0)) {
@@ -17,7 +18,7 @@ public class AdvanceWithBallToGoal extends BTNode<BTreePlayer> {
 		}
 		
 		//resultado desejado atingido: perto da bola (dist < 3) e perto do goal (dist < 20)
-		if (agent.isCloseTo(ballPos, 3.0) && agent.isCloseTo(agent.goalPosition, 20)) {
+		if (agent.isCloseTo(ballPos, 3.0) && agent.isCloseTo(agent.getGoalPosition(), 20)) {
 			return BTStatus.SUCCESS;
 		}
 		
@@ -25,12 +26,12 @@ public class AdvanceWithBallToGoal extends BTNode<BTreePlayer> {
 		//                    corre atras da bola e da um pequeno toque
 		if (agent.isAlignedTo(ballPos)) {
 			if (agent.isCloseTo(ballPos, 1.0)) {
-				agent.commander.doKickToPoint(40.0d, agent.goalPosition); //da um toque adiante (forca baixa)
+				agent.getCommander().doKickToPoint(40.0d, agent.getGoalPosition()); //da um toque adiante (forca baixa)
 			} else {
-				agent.commander.doDashBlocking(100.0d); //chega mais perto da bola
+				agent.getCommander().doDashBlocking(100.0d); //chega mais perto da bola
 			}
 		} else {
-			agent.commander.doTurnToPoint(ballPos);
+			agent.getCommander().doTurnToPoint(ballPos);
 		}
 		
 		return BTStatus.RUNNING;

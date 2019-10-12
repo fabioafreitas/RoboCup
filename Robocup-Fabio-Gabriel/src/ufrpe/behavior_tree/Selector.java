@@ -1,4 +1,4 @@
-package behavior_tree;
+package ufrpe.behavior_tree;
 
 import java.util.LinkedList;
 

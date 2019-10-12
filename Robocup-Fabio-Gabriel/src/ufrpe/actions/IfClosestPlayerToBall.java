@@ -2,23 +2,24 @@ package ufrpe.actions;
 
 import java.util.List;
 
-import behavior_tree.BTNode;
-import behavior_tree.BTStatus;
+import ufrpe.behavior_tree.BTNode;
+import ufrpe.behavior_tree.BTStatus;
 import easy_soccer_lib.perception.FieldPerception;
 import easy_soccer_lib.perception.PlayerPerception;
 import easy_soccer_lib.utils.Vector2D;
+import ufrpe.BehaviorTreePlayer;
 
-public class IfClosestPlayerToBall extends BTNode<BTreePlayer> {
+public class IfClosestPlayerToBall extends BTNode<BehaviorTreePlayer> {
 
 	@Override
-	public BTStatus tick(BTreePlayer agent) {
-		PlayerPerception selfPerc = agent.selfPerc;
-		FieldPerception fieldPerc = agent.fieldPerc;
+	public BTStatus tick(BehaviorTreePlayer agent) {
+		PlayerPerception selfPerc = agent.getSelfPerc();
+		FieldPerception fieldPerc = agent.getFieldPerc();
 		
 		Vector2D ballPosition = fieldPerc.getBall().getPosition();
 		List<PlayerPerception> myTeam = fieldPerc.getTeamPlayers(selfPerc.getSide());
 		
-		PlayerPerception closestPlayer = agent.selfPerc;
+		PlayerPerception closestPlayer = agent.getSelfPerc();
 		double closestDistance = Double.MAX_VALUE;
 		
 		for (PlayerPerception player : myTeam) {
