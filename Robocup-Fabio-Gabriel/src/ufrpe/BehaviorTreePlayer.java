@@ -37,40 +37,16 @@ public class BehaviorTreePlayer extends Thread {
 	public BehaviorTreePlayer(PlayerCommander player, Vector2D home) {
 		commander = player;
 		homePosition = home;
-		btree = buildTree();
 	}
-
-	private BTNode<BehaviorTreePlayer> buildTree() {
-		Selector<BehaviorTreePlayer> raiz = new Selector<BehaviorTreePlayer>("RAIZ");
-		
-		Sequence<BehaviorTreePlayer> attackTree = new Sequence<BehaviorTreePlayer>("Avanca-para-Gol");
-		attackTree.add(new IfClosestPlayerToBall());
-		attackTree.add(new AdvanceWithBallToGoal());
-		attackTree.add(new KickToScore());
-
-		Sequence<BehaviorTreePlayer> deffensiveTree = new Sequence<BehaviorTreePlayer>("Rouba-Bola");
-		deffensiveTree.add(new IfClosestPlayerToBall());
-		deffensiveTree.add(new GoGetBall());
-		
-		//BTNode<BTPlayer> defaultTree = new ReturnToHome(); //TODO fica como EXERCICIO
-		
-		raiz.add(attackTree);
-		raiz.add(deffensiveTree);
-		//raiz.add(defaultTree); //TODO
-		
-		return raiz;
-	}
-
-
 
 	@Override
 	public void run() {
 		System.out.println(">> 1. Esperando percepcoes iniciais...");
-		updatePerceptions();
+		updatePerceptionsBlocking();
 
 		System.out.println(">> 2. Movendo jogadores para posicao inicial...");
 		commander.doMoveBlocking(homePosition.getX(), homePosition.getY());
-		updatePerceptions();
+		updatePerceptionsBlocking();
 
 		if (selfPerc.getSide() == EFieldSide.LEFT) {
 			goalPosition = new Vector2D(52.0d, 0);
@@ -81,46 +57,218 @@ public class BehaviorTreePlayer extends Thread {
 		}
 
 		System.out.println(">> 3. Iniciando...");
-
-		//TODO alterar
 		switch (selfPerc.getUniformNumber()) {
 			case MEIA:
-				acaoMeia(); break;
+				btree = buildTree_Meia();
+				break;
 			case GOLEIRO:
-				acaoGoleiro(); break;
+				btree = buildTree_Goleiro();
+				break;
 			case ZAGUEIRO_DIREITO:
-				acaoZagueiroDireito(); break;
+				btree = buildTree_ZagueiroDireito();
+				break;
 			case ZAGUEIRO_ESQUERDO:
-				acaoZagueiroEsquerdo(); break;
+				btree = buildTree_ZagueiroEsquerdo();
+				break;
 			case LATERAL_DIREITO:
-				acaoLateralDireito(); break;
+				btree = buildTree_LateralDireito();
+				break;
 			case LATERAL_ESQUERDO:
-				acaoLateralEsquerdo(); break;
+				btree = buildTree_LateralEsquerdo();
+				break;
 			case ATACANTE_DIREITO:
-				acaoAtacanteDireito(); break;
+				btree = buildTree_AtacanteDireito();
+				break;
 			case ATACANTE_ESQUERDO:
-				acaoAtacanteEsquerdo(); break;
+				btree = buildTree_AtacanteEsquerdo();
+				break;
 			default: break;
 		}
 
-		//TODO mover este loop para dentro de cada ação dos jogadores
 		while (commander.isActive()) {
-
 			btree.tick(this);
-
 			try {
 				sleep(100);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-
 			updatePerceptions(); //non-blocking
 		}
 
 		System.out.println(">> 4. Finalizado!");
 	}
 
-	private void updatePerceptions() {
+	
+
+	private BTNode<BehaviorTreePlayer> buildTree_Goleiro() {
+		Selector<BehaviorTreePlayer> raiz = new Selector<BehaviorTreePlayer>("RAIZ");
+
+		Sequence<BehaviorTreePlayer> attackTree = new Sequence<BehaviorTreePlayer>("Avanca-para-Gol");
+		attackTree.add(new IfClosestPlayerToBall());
+		attackTree.add(new AdvanceWithBallToGoal());
+		attackTree.add(new KickToScore());
+
+		Sequence<BehaviorTreePlayer> deffensiveTree = new Sequence<BehaviorTreePlayer>("Rouba-Bola");
+		deffensiveTree.add(new IfClosestPlayerToBall());
+		deffensiveTree.add(new GoGetBall());
+
+		//BTNode<BTPlayer> defaultTree = new ReturnToHome(); //TODO fica como EXERCICIO
+
+		raiz.add(attackTree);
+		raiz.add(deffensiveTree);
+		//raiz.add(defaultTree); //TODO
+
+		return raiz;
+	}
+
+	private BTNode<BehaviorTreePlayer> buildTree_Meia() {
+		Selector<BehaviorTreePlayer> raiz = new Selector<BehaviorTreePlayer>("RAIZ");
+
+		Sequence<BehaviorTreePlayer> attackTree = new Sequence<BehaviorTreePlayer>("Avanca-para-Gol");
+		attackTree.add(new IfClosestPlayerToBall());
+		attackTree.add(new AdvanceWithBallToGoal());
+		attackTree.add(new KickToScore());
+
+		Sequence<BehaviorTreePlayer> deffensiveTree = new Sequence<BehaviorTreePlayer>("Rouba-Bola");
+		deffensiveTree.add(new IfClosestPlayerToBall());
+		deffensiveTree.add(new GoGetBall());
+
+		//BTNode<BTPlayer> defaultTree = new ReturnToHome(); //TODO fica como EXERCICIO
+
+		raiz.add(attackTree);
+		raiz.add(deffensiveTree);
+		//raiz.add(defaultTree); //TODO
+
+		return raiz;
+	}
+
+	private BTNode<BehaviorTreePlayer> buildTree_LateralDireito() {
+		Selector<BehaviorTreePlayer> raiz = new Selector<BehaviorTreePlayer>("RAIZ");
+
+		Sequence<BehaviorTreePlayer> attackTree = new Sequence<BehaviorTreePlayer>("Avanca-para-Gol");
+		attackTree.add(new IfClosestPlayerToBall());
+		attackTree.add(new AdvanceWithBallToGoal());
+		attackTree.add(new KickToScore());
+
+		Sequence<BehaviorTreePlayer> deffensiveTree = new Sequence<BehaviorTreePlayer>("Rouba-Bola");
+		deffensiveTree.add(new IfClosestPlayerToBall());
+		deffensiveTree.add(new GoGetBall());
+
+		//BTNode<BTPlayer> defaultTree = new ReturnToHome(); //TODO fica como EXERCICIO
+
+		raiz.add(attackTree);
+		raiz.add(deffensiveTree);
+		//raiz.add(defaultTree); //TODO
+
+		return raiz;
+	}
+
+	private BTNode<BehaviorTreePlayer> buildTree_ZagueiroDireito() {
+		Selector<BehaviorTreePlayer> raiz = new Selector<BehaviorTreePlayer>("RAIZ");
+
+		Sequence<BehaviorTreePlayer> attackTree = new Sequence<BehaviorTreePlayer>("Avanca-para-Gol");
+		attackTree.add(new IfClosestPlayerToBall());
+		attackTree.add(new AdvanceWithBallToGoal());
+		attackTree.add(new KickToScore());
+
+		Sequence<BehaviorTreePlayer> deffensiveTree = new Sequence<BehaviorTreePlayer>("Rouba-Bola");
+		deffensiveTree.add(new IfClosestPlayerToBall());
+		deffensiveTree.add(new GoGetBall());
+
+		//BTNode<BTPlayer> defaultTree = new ReturnToHome(); //TODO fica como EXERCICIO
+
+		raiz.add(attackTree);
+		raiz.add(deffensiveTree);
+		//raiz.add(defaultTree); //TODO
+
+		return raiz;
+	}
+
+	private BTNode<BehaviorTreePlayer> buildTree_AtacanteDireito() {
+		Selector<BehaviorTreePlayer> raiz = new Selector<BehaviorTreePlayer>("RAIZ");
+
+		Sequence<BehaviorTreePlayer> attackTree = new Sequence<BehaviorTreePlayer>("Avanca-para-Gol");
+		attackTree.add(new IfClosestPlayerToBall());
+		attackTree.add(new AdvanceWithBallToGoal());
+		attackTree.add(new KickToScore());
+
+		Sequence<BehaviorTreePlayer> deffensiveTree = new Sequence<BehaviorTreePlayer>("Rouba-Bola");
+		deffensiveTree.add(new IfClosestPlayerToBall());
+		deffensiveTree.add(new GoGetBall());
+
+		//BTNode<BTPlayer> defaultTree = new ReturnToHome(); //TODO fica como EXERCICIO
+
+		raiz.add(attackTree);
+		raiz.add(deffensiveTree);
+		//raiz.add(defaultTree); //TODO
+
+		return raiz;
+	}
+
+	private BTNode<BehaviorTreePlayer> buildTree_LateralEsquerdo() {
+		Selector<BehaviorTreePlayer> raiz = new Selector<BehaviorTreePlayer>("RAIZ");
+
+		Sequence<BehaviorTreePlayer> attackTree = new Sequence<BehaviorTreePlayer>("Avanca-para-Gol");
+		attackTree.add(new IfClosestPlayerToBall());
+		attackTree.add(new AdvanceWithBallToGoal());
+		attackTree.add(new KickToScore());
+
+		Sequence<BehaviorTreePlayer> deffensiveTree = new Sequence<BehaviorTreePlayer>("Rouba-Bola");
+		deffensiveTree.add(new IfClosestPlayerToBall());
+		deffensiveTree.add(new GoGetBall());
+
+		//BTNode<BTPlayer> defaultTree = new ReturnToHome(); //TODO fica como EXERCICIO
+
+		raiz.add(attackTree);
+		raiz.add(deffensiveTree);
+		//raiz.add(defaultTree); //TODO
+
+		return raiz;
+	}
+
+	private BTNode<BehaviorTreePlayer> buildTree_ZagueiroEsquerdo() {
+		Selector<BehaviorTreePlayer> raiz = new Selector<BehaviorTreePlayer>("RAIZ");
+
+		Sequence<BehaviorTreePlayer> attackTree = new Sequence<BehaviorTreePlayer>("Avanca-para-Gol");
+		attackTree.add(new IfClosestPlayerToBall());
+		attackTree.add(new AdvanceWithBallToGoal());
+		attackTree.add(new KickToScore());
+
+		Sequence<BehaviorTreePlayer> deffensiveTree = new Sequence<BehaviorTreePlayer>("Rouba-Bola");
+		deffensiveTree.add(new IfClosestPlayerToBall());
+		deffensiveTree.add(new GoGetBall());
+
+		//BTNode<BTPlayer> defaultTree = new ReturnToHome(); //TODO fica como EXERCICIO
+
+		raiz.add(attackTree);
+		raiz.add(deffensiveTree);
+		//raiz.add(defaultTree); //TODO
+
+		return raiz;
+	}
+
+	private BTNode<BehaviorTreePlayer> buildTree_AtacanteEsquerdo() {
+		Selector<BehaviorTreePlayer> raiz = new Selector<BehaviorTreePlayer>("RAIZ");
+
+		Sequence<BehaviorTreePlayer> attackTree = new Sequence<BehaviorTreePlayer>("Avanca-para-Gol");
+		attackTree.add(new IfClosestPlayerToBall());
+		attackTree.add(new AdvanceWithBallToGoal());
+		attackTree.add(new KickToScore());
+
+		Sequence<BehaviorTreePlayer> deffensiveTree = new Sequence<BehaviorTreePlayer>("Rouba-Bola");
+		deffensiveTree.add(new IfClosestPlayerToBall());
+		deffensiveTree.add(new GoGetBall());
+
+		//BTNode<BTPlayer> defaultTree = new ReturnToHome(); //TODO fica como EXERCICIO
+
+		raiz.add(attackTree);
+		raiz.add(deffensiveTree);
+		//raiz.add(defaultTree); //TODO
+
+		return raiz;
+	}
+
+	private void updatePerceptionsBlocking() {
 		PlayerPerception newSelf = commander.perceiveSelfBlocking();
 		FieldPerception newField = commander.perceiveFieldBlocking();
 
@@ -131,7 +279,19 @@ public class BehaviorTreePlayer extends Thread {
 			this.fieldPerc = newField;
 		}
 	}
-	
+
+	private void updatePerceptions() {
+		PlayerPerception newSelf = commander.perceiveSelf();
+		FieldPerception newField = commander.perceiveField();
+
+		if (newSelf != null) {
+			this.selfPerc = newSelf;
+		}
+		if (newField != null) {
+			this.fieldPerc = newField;
+		}
+	}
+
 	/** Algumas funcoes auxiliares que mais de um tipo de no da arvore pode precisar **/
 
 	public boolean closeTo(Vector2D pos) {
@@ -149,56 +309,17 @@ public class BehaviorTreePlayer extends Thread {
 
 	public boolean isAlignedTo(Vector2D position, double minAngle) {
 		if (minAngle < 0) minAngle = -minAngle;
-		
+
 		Vector2D myPos = selfPerc.getPosition();
-		
+
 		if (position == null || myPos == null) {
-			return false;			
+			return false;
 		}
-		
+
 		double angle = selfPerc.getDirection().angleFrom(position.sub(myPos));
 		return angle < minAngle && angle > -minAngle;
 	}
-
-	void acaoGoleiro() {
-		//TODO colocar este metodo dentro de uma classe, como metodo estatico
-	}
-
-	void acaoMeia() {
-		//TODO colocar este metodo dentro de uma classe, como metodo estatico
-
-	}
-
-	void acaoLateralDireito() {
-		//TODO colocar este metodo dentro de uma classe, como metodo estatico
-
-	}
-
-	void acaoZagueiroDireito() {
-		//TODO colocar este metodo dentro de uma classe, como metodo estatico
-
-	}
-
-	void acaoAtacanteDireito() {
-		//TODO colocar este metodo dentro de uma classe, como metodo estatico
-
-	}
-
-	void acaoLateralEsquerdo() {
-		//TODO colocar este metodo dentro de uma classe, como metodo estatico
-
-	}
-
-	void acaoZagueiroEsquerdo() {
-		//TODO colocar este metodo dentro de uma classe, como metodo estatico
-
-	}
-
-	void acaoAtacanteEsquerdo() {
-		//TODO colocar este metodo dentro de uma classe, como metodo estatico
-
-	}
-
+	
 	public PlayerCommander getCommander() {
 		return commander;
 	}
