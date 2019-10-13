@@ -12,17 +12,19 @@ import ufrpe.actions.AdvanceWithBallToGoal;
 import ufrpe.actions.GoGetBall;
 import ufrpe.actions.IfClosestPlayerToBall;
 import ufrpe.actions.KickToScore;
+import ufrpe.actions.MoveAccordingToBall;
+import ufrpe.actions.ReturnToHome;
 
 
 public class BehaviorTreePlayer extends Thread {
-	private final int GOLEIRO = 0;
-	private final int MEIA = 1;
-	private final int ZAGUEIRO_DIREITO = 2;
-	private final int ZAGUEIRO_ESQUERDO = 3;
-	private final int LATERAL_DIREITO = 4;
-	private final int LATERAL_ESQUERDO = 5;
-	private final int ATACANTE_DIREITO = 6;
-	private final int ATACANTE_ESQUERDO = 7;
+	private final int GOLEIRO = 1;
+	private final int MEIA = 2; 
+	private final int ZAGUEIRO_DIREITO = 3;
+	private final int ZAGUEIRO_ESQUERDO = 4;
+	private final int LATERAL_DIREITO = 5;
+	private final int LATERAL_ESQUERDO = 6;
+	private final int ATACANTE_DIREITO = 7;
+	private final int ATACANTE_ESQUERDO = 8;
 
 	private final PlayerCommander commander;
 	private PlayerPerception selfPerc;
@@ -111,12 +113,15 @@ public class BehaviorTreePlayer extends Thread {
 		Sequence<BehaviorTreePlayer> deffensiveTree = new Sequence<BehaviorTreePlayer>("Rouba-Bola");
 		deffensiveTree.add(new IfClosestPlayerToBall());
 		deffensiveTree.add(new GoGetBall());
+		
 
-		//BTNode<BTPlayer> defaultTree = new ReturnToHome(); //TODO fica como EXERCICIO
-
+//		Sequence<BehaviorTreePlayer> defaultTree = new Sequence<BehaviorTreePlayer>("Padrao");
+//		defaultTree.add(new IfClosestPlayerToBall());
+//		defaultTree.add(new GoGetBall());
+		BTNode<BehaviorTreePlayer> defaultTree = new MoveAccordingToBall(); //TODO fica como EXERCICIO
 		raiz.add(attackTree);
 		raiz.add(deffensiveTree);
-		//raiz.add(defaultTree); //TODO
+		raiz.add(defaultTree); //TODO
 
 		return raiz;
 	}
