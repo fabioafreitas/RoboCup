@@ -14,8 +14,8 @@ public class MoveAccordingToBall extends BTNode<BehaviorTreePlayer> {
 		Vector2D ballPos = agent.getFieldPerc().getBall().getPosition();
 		Vector2D playerPos = agent.getSelfPerc().getPosition();
 
-		if(agent.getSelfPerc().getSide() == EFieldSide.LEFT && ballPos.getX() <0) {			
-			posGoleiro(agent, ballPos, playerPos,0);		
+		if(agent.getSelfPerc().getSide() == EFieldSide.LEFT && ballPos.getX() <0) {
+			posGoleiro(agent, ballPos, playerPos,0);
 		}
 		else if (agent.getSelfPerc().getSide() == EFieldSide.RIGHT && ballPos.getX()>0){
 			posGoleiro(agent, ballPos, playerPos,-1);

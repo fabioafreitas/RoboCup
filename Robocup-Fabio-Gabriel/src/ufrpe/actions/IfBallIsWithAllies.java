@@ -1,14 +1,11 @@
 package ufrpe.actions;
 
-import easy_soccer_lib.perception.MatchPerception;
 import easy_soccer_lib.perception.PlayerPerception;
-import easy_soccer_lib.utils.EFieldSide;
 import easy_soccer_lib.utils.Vector2D;
 import ufrpe.BehaviorTreePlayer;
 import ufrpe.behavior_tree.BTNode;
 import ufrpe.behavior_tree.BTStatus;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -16,7 +13,7 @@ import java.util.List;
  *
  * se a bola esta mais proxima de um jogador de um jogador oponente
  */
-public class IfBallIsWithOpponent extends BTNode<BehaviorTreePlayer> {
+public class IfBallIsWithAllies extends BTNode<BehaviorTreePlayer> {
     @Override
     public BTStatus tick(BehaviorTreePlayer agent) {
         List<PlayerPerception> jogadores = agent.getFieldPerc().getAllPlayers();
@@ -33,7 +30,7 @@ public class IfBallIsWithOpponent extends BTNode<BehaviorTreePlayer> {
             }
         }
 
-        if(closestPlayer.getSide() != agent.getSelfPerc().getSide())
+        if(closestPlayer.getSide() == agent.getSelfPerc().getSide())
             return BTStatus.SUCCESS;
         return BTStatus.FAILURE;
     }

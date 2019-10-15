@@ -105,7 +105,7 @@ public class BehaviorTreePlayer extends Thread {
 	}
 
 	
-
+	//TODO
 	private BTNode<BehaviorTreePlayer> buildTree_Goleiro() {
 		Selector<BehaviorTreePlayer> raiz = new Selector<BehaviorTreePlayer>("RAIZ");
 
@@ -130,6 +130,7 @@ public class BehaviorTreePlayer extends Thread {
 		return raiz;
 	}
 
+	//TODO
 	private BTNode<BehaviorTreePlayer> buildTree_Meia() {
 		Selector<BehaviorTreePlayer> raiz = new Selector<BehaviorTreePlayer>("RAIZ");
 
@@ -151,26 +152,32 @@ public class BehaviorTreePlayer extends Thread {
 		return raiz;
 	}
 
+	//TODO
 	private BTNode<BehaviorTreePlayer> buildTree_LateralDireito() {
 		return null;
 	}
 
+	//TODO
 	private BTNode<BehaviorTreePlayer> buildTree_ZagueiroDireito() {
 		return null;
 	}
 
+	//TODO
 	private BTNode<BehaviorTreePlayer> buildTree_AtacanteDireito() {
 		return null;
 	}
 
+	//TODO
 	private BTNode<BehaviorTreePlayer> buildTree_LateralEsquerdo() {
 		return null;
 	}
 
+	//TODO
 	private BTNode<BehaviorTreePlayer> buildTree_ZagueiroEsquerdo() {
 		return null;
 	}
 
+	//TODO
 	private BTNode<BehaviorTreePlayer> buildTree_AtacanteEsquerdo() {
 		return null;
 	}
