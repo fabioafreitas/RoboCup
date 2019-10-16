@@ -29,18 +29,6 @@ public class PassBall extends BTNode<BehaviorTreePlayer> {
             }
         }
 
-        //ordenando jogadores pela distancia com o jogador atual
-        /*TODO depois fzer um mecanismo de detectar o
-           quanto o jogador esta marcado, para evitar perder a bola*/
-//        myTeam.sort(new Comparator<PlayerPerception>() {
-//            @Override
-//            public int compare(PlayerPerception o1, PlayerPerception o2) {
-//                double distanceA = o1.getPosition().distanceTo(agent.getSelfPerc().getPosition());
-//                double distanceB = o2.getPosition().distanceTo(agent.getSelfPerc().getPosition());
-//                return (int) (distanceA - distanceB);
-//            }
-//        });
-
         PlayerPerception closestPlayer = null;
         double closestDistance = Double.MAX_VALUE;
 
@@ -53,8 +41,18 @@ public class PassBall extends BTNode<BehaviorTreePlayer> {
             }
         }
 
-        agent.getCommander().doKickToDirection(65, closestPlayer.getPosition());
+        if(agent.isCloseTo(ballPosition, 1.0d)) {
+            agent.getCommander().doKickToDirection(65, closestPlayer.getPosition());
+            return BTStatus.SUCCESS;
+        }
 
-        return BTStatus.RUNNING;
+        if(agent.isAlignedTo(ballPosition)) {
+            agent.getCommander().doDashBlocking(60);
+            return BTStatus.RUNNING;
+        }
+        else {
+            agent.getCommander().doTurnToPoint(ballPosition);
+            return BTStatus.RUNNING;
+        }
     }
 }
