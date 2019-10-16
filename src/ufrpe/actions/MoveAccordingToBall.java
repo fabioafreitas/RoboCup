@@ -28,7 +28,7 @@ public class MoveAccordingToBall extends BTNode<BehaviorTreePlayer> {
 		if(ballPos.getY() < playerPos.getY()) {
 			if(agent.getSelfPerc().getPosition().getY() > -5.75) {
 				agent.getCommander().doTurnToDirection(new Vector2D(0, -7));
-				agent.getCommander().doDashBlocking(50);
+				agent.getCommander().doDashBlocking(100);
 			}
 			else {
 				agent.getCommander().doTurnToDirection(new Vector2D(whereToLook, 0));
@@ -38,7 +38,7 @@ public class MoveAccordingToBall extends BTNode<BehaviorTreePlayer> {
 		else if(ballPos.getY() > playerPos.getY()+1.3) { //esse 1.3 eh pra ter certeza que ele vai ter o turntodirection completo antes do dash
 			if(agent.getSelfPerc().getPosition().getY() < 5.75) {
 				agent.getCommander().doTurnToDirection(new Vector2D(0, 7));
-				agent.getCommander().doDashBlocking(50);
+				agent.getCommander().doDashBlocking(100);
 			}
 			else {
 				agent.getCommander().doTurnToDirection(new Vector2D(whereToLook, 0));

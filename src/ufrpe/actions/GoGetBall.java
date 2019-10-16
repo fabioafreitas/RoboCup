@@ -13,7 +13,7 @@ public class GoGetBall extends BTNode<BehaviorTreePlayer> {
 		Vector2D ballPos = agent.getFieldPerc().getBall().getPosition();
 		
 		//condicao desejada: perto da bola (dist < 3) 
-		if (agent.isCloseTo(ballPos, 3.0)) {
+		if (agent.isCloseTo(ballPos, 1.0)) {
 			print("PERTO!");
 			return BTStatus.SUCCESS;
 		}

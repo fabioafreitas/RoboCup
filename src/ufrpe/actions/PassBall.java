@@ -41,18 +41,12 @@ public class PassBall extends BTNode<BehaviorTreePlayer> {
             }
         }
 
-        if(agent.isCloseTo(ballPosition, 1.0d)) {
-            agent.getCommander().doKickToDirection(65, closestPlayer.getPosition());
-            return BTStatus.SUCCESS;
+        if(!agent.isCloseTo(ballPosition, 1.0d)) {
+            return BTStatus.FAILURE;
         }
 
-        if(agent.isAlignedTo(ballPosition)) {
-            agent.getCommander().doDashBlocking(60);
-            return BTStatus.RUNNING;
-        }
-        else {
-            agent.getCommander().doTurnToPoint(ballPosition);
-            return BTStatus.RUNNING;
-        }
+        agent.getCommander().doKickToPoint(65, closestPlayer.getPosition());
+        return BTStatus.SUCCESS;
+
     }
 }

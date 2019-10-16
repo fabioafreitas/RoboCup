@@ -6,7 +6,7 @@ import easy_soccer_lib.utils.Vector2D;
 
 public class BehaviorTreeTeam extends AbstractTeam {
 	public BehaviorTreeTeam(String suffix) {
-		super(suffix, 8, false);
+		super(suffix, 8, true);
 	}
 
 	@Override
