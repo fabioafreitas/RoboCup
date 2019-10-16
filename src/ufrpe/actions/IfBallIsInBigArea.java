@@ -9,9 +9,13 @@ import ufrpe.behavior_tree.BTStatus;
 import java.awt.*;
 
 /**
- * Checa se a bola está dentro da pequena area
+ * Checa se a bola está dentro da grande area
+ *
+ *
+ *
+ *
  */
-public class IfBallIsInSmallArea extends BTNode<BehaviorTreePlayer> {
+public class IfBallIsInBigArea extends BTNode<BehaviorTreePlayer> {
 
     @Override
     public BTStatus tick(BehaviorTreePlayer agent) {

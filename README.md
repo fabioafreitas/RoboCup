@@ -1,6 +1,6 @@
-# RoboCup
+RoboCup
 
-Projeto da disciplina de Sistemas Multiagentes, na qual é implementado um time de futebol com agentes inteligentes.
+Projeto da disciplina de Sistemas Multiagentes, na qual é implementado um time de futebol com agentes inteligentes. É utilizado **Behavior Tree** para as ações dos jogadores.
 
 Bibliotecas Utilizadas:
   * [Robo Soccer Lib](https://bitbucket.org/brunohpmarques/robosoccerlib)
