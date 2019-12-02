@@ -1,4 +1,4 @@
-package ufrpe.actions;
+package ufrpe.actions.conditions;
 
 import easy_soccer_lib.perception.PlayerPerception;
 import easy_soccer_lib.utils.Vector2D;
@@ -13,6 +13,7 @@ import java.util.List;
  *
  * se a bola esta mais proxima de um jogador de um jogador oponente
  */
+@Deprecated
 public class IfBallIsWithAllies extends BTNode<BehaviorTreePlayer> {
     @Override
     public BTStatus tick(BehaviorTreePlayer agent) {

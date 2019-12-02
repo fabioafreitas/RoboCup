@@ -11,8 +11,9 @@ public class Main {
 		BehaviorTreeTeam team2 = new BehaviorTreeTeam("Santa_Cruz");
 
 		team1.launchTeamAndServer();
-		team2.launchTeam();
-	}
+  		team2.launchTeam();
+
+    }
 	
 }
 

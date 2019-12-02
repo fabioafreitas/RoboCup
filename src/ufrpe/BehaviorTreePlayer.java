@@ -2,7 +2,10 @@ package ufrpe;
 
 import easy_soccer_lib.perception.MatchPerception;
 import ufrpe.actions.*;
-import ufrpe.actions.game_states.IfStatusIsBeforeKickOff;
+import ufrpe.actions.conditions.IfBallIsInBigArea;
+import ufrpe.actions.conditions.IfBallIsWithAllies;
+import ufrpe.actions.conditions.IfBallIsWithOpponent;
+import ufrpe.actions.conditions.IfClosestPlayerToBall;
 import ufrpe.behavior_tree.BTNode;
 import ufrpe.behavior_tree.Selector;
 import ufrpe.behavior_tree.Sequence;
@@ -197,7 +200,7 @@ public class BehaviorTreePlayer extends Thread {
 		deffensiveTree.add(new IfClosestPlayerToBall());
 		deffensiveTree.add(new GoGetBall());
 
-		BTNode<BehaviorTreePlayer> defaultTree = new ReturnToHome();
+		BTNode<BehaviorTreePlayer> defaultTree = new ReturnToHomePosition();
 
 		raiz.add(attackTree);
 		raiz.add(deffensiveTree);
@@ -262,7 +265,7 @@ public class BehaviorTreePlayer extends Thread {
 		deffensiveTree.add(new IfClosestPlayerToBall());
 		deffensiveTree.add(new GoGetBall());
 
-		BTNode<BehaviorTreePlayer> defaultTree = new ReturnToHome();
+		BTNode<BehaviorTreePlayer> defaultTree = new ReturnToHomePosition();
 
 		raiz.add(attackTree);
 		raiz.add(deffensiveTree);

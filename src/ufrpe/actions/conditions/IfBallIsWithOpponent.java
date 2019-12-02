@@ -1,4 +1,4 @@
-package ufrpe.actions;
+package ufrpe.actions.conditions;
 
 import easy_soccer_lib.perception.MatchPerception;
 import easy_soccer_lib.perception.PlayerPerception;
@@ -16,6 +16,7 @@ import java.util.List;
  *
  * se a bola esta mais proxima de um jogador de um jogador oponente
  */
+@Deprecated
 public class IfBallIsWithOpponent extends BTNode<BehaviorTreePlayer> {
     @Override
     public BTStatus tick(BehaviorTreePlayer agent) {

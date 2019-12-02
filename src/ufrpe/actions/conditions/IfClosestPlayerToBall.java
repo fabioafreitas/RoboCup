@@ -1,4 +1,4 @@
-package ufrpe.actions;
+package ufrpe.actions.conditions;
 
 import java.util.List;
 

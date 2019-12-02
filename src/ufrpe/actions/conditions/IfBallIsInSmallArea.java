@@ -1,4 +1,4 @@
-package ufrpe.actions;
+package ufrpe.actions.conditions;
 
 import easy_soccer_lib.utils.EFieldSide;
 import easy_soccer_lib.utils.Vector2D;
@@ -15,14 +15,14 @@ import java.awt.*;
  *
  *
  */
-public class IfBallIsInBigArea extends BTNode<BehaviorTreePlayer> {
+public class IfBallIsInSmallArea extends BTNode<BehaviorTreePlayer> {
 
     @Override
     public BTStatus tick(BehaviorTreePlayer agent) {
         EFieldSide side = agent.getSelfPerc().getSide();
         Rectangle area = (side == EFieldSide.LEFT) ?
-                new Rectangle(-52, -20, 16, 40) :
-                new Rectangle(36, -20, 16, 40);
+                new Rectangle(-52, -9, 6, 18) :
+                new Rectangle(46, -9, 6, 18);
         Vector2D ballPos = agent.getFieldPerc().getBall().getPosition();
 
         if(area.contains(ballPos.getX(), ballPos.getY())) {
