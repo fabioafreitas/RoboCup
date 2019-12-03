@@ -13,7 +13,7 @@ public class ReturnToHomePosition extends BTNode<BehaviorTreePlayer> {
 		Vector2D homePosition = agent.getHomePosition();
 
 		//Se ja esta proximo da homePosition, retorna sucesso
-		if(agent.isCloseTo(homePosition, 3.0d)) {
+		if(agent.isCloseTo(homePosition, 1.0d)) {
 			return BTStatus.SUCCESS;
 		}
 
