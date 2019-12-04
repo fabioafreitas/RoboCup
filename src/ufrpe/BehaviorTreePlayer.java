@@ -6,7 +6,7 @@ import ufrpe.actions.conditions.IfBallIsInBigArea;
 import ufrpe.actions.conditions.IfBallIsWithAllies;
 import ufrpe.actions.conditions.IfBallIsWithOpponent;
 import ufrpe.actions.conditions.IfClosestPlayerToBall;
-import ufrpe.actions.game_states.IfStatusIsBeforeKickOff;
+import ufrpe.actions.game_states.*;
 import ufrpe.behavior_tree.BTNode;
 import ufrpe.behavior_tree.Selector;
 import ufrpe.behavior_tree.Sequence;
@@ -14,33 +14,17 @@ import easy_soccer_lib.PlayerCommander;
 import easy_soccer_lib.perception.FieldPerception;
 import easy_soccer_lib.perception.PlayerPerception;
 import easy_soccer_lib.utils.EFieldSide;
-import easy_soccer_lib.utils.EMatchState;
 import easy_soccer_lib.utils.Vector2D;
 
-
 public class BehaviorTreePlayer extends Thread {
-	private final int GOLEIRO = 1;
-	private final int MEIA = 2; 
-	private final int ZAGUEIRO_DIREITO = 3;
-	private final int ZAGUEIRO_ESQUERDO = 4;
-	private final int LATERAL_DIREITO = 5;
-	private final int LATERAL_ESQUERDO = 6;
-	private final int ATACANTE_DIREITO = 7;
-	private final int ATACANTE_ESQUERDO = 8;
-
 	private final PlayerCommander commander;
 	private PlayerPerception selfPerc;
 	private FieldPerception  fieldPerc;
 	private MatchPerception  matchPerc;
-
-
-
 	private Vector2D homePosition;
 	private Vector2D goalPosition;
-	
 	private BTNode<BehaviorTreePlayer> btree;
-	
-	
+
 	public BehaviorTreePlayer(PlayerCommander player, Vector2D home) {
 		commander = player;
 		homePosition = home;
@@ -65,29 +49,29 @@ public class BehaviorTreePlayer extends Thread {
 
 		System.out.println(">> 3. Iniciando...");
 		switch (selfPerc.getUniformNumber()) {
-			case MEIA:
-				btree = buildTree_Meia();
+			case 1: //GOLEIRO
+				btree = buildTree(Goleiro());
 				break;
-			case GOLEIRO:
-				btree = buildTree_Goleiro();
+			case 2: //MEIA
+				btree = buildTree(Meia());
 				break;
-			case ZAGUEIRO_DIREITO:
-				btree = buildTree_ZagueiroDireito();
+			case 3: //ZAGUEIRO DIREITO
+				btree = buildTree(ZagueiroDireito());
 				break;
-			case ZAGUEIRO_ESQUERDO:
-				btree = buildTree_ZagueiroEsquerdo();
+			case 4: //ZAGUEIRO ESQUERDO
+				btree = buildTree(ZagueiroEsquerdo());
 				break;
-			case LATERAL_DIREITO:
-				btree = buildTree_LateralDireito();
+			case 5: //LATERAL DIREITO
+				btree = buildTree(LateralDireito());
 				break;
-			case LATERAL_ESQUERDO:
-				btree = buildTree_LateralEsquerdo();
+			case 6: //LATERAL ESQUERDO
+				btree = buildTree(LateralEsquerdo());
 				break;
-			case ATACANTE_DIREITO:
-				btree = buildTree_AtacanteDireito();
+			case 7: //ATACANTE DIREITO
+				btree = buildTree(AtacanteDireito());
 				break;
-			case ATACANTE_ESQUERDO:
-				btree = buildTree_AtacanteEsquerdo();
+			case 8: //ATACANTE ESQUERDO
+				btree = buildTree(AtacanteEsquerdo());
 				break;
 			default: break;
 		}
@@ -96,76 +80,41 @@ public class BehaviorTreePlayer extends Thread {
 			btree.tick(this);
 			try {
 				sleep(100);
-//				switch(matchPerc.getState()) {
-//				case BEFORE_KICK_OFF:
-//					new IfStatusIsBeforeKickOff().tick(this);
-//					break;
-//				}
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-			
-			/*switch(matchPerc.getState()){
-			case BEFORE_KICK_OFF:
-				selfPerc.setDirection(new Vector2D(-50.0d, 0.0d));
-				break;
-			case TIME_OVER:
-				break;
-			case PLAY_ON:
-				break;
-			case KICK_OFF_LEFT:
-				selfPerc.setDirection(new Vector2D(-50.0d, 0.0d));
-				break;
-			case KICK_OFF_RIGHT:
-				break;
-			case KICK_IN_LEFT:
-				break;
-			case KICK_IN_RIGHT:
-				break;
-			case FREE_KICK_LEFT:
-				break;
-			case FREE_KICK_RIGHT:
-				break;
-			case CORNER_KICK_LEFT:
-				break;
-			case CORNER_KICK_RIGHT:
-				break;
-			case GOAL_KICK_LEFT:
-				break;
-			case GOAL_KICK_RIGHT:
-				break;
-			case AFTER_GOAL_LEFT:
-				break;
-			case AFTER_GOAL_RIGHT:
-				break;
-			case DROP_BALL:
-				break;
-			case OFFSIDE_LEFT:
-				break;
-			case OFFSIDE_RIGHT :
-				break;
-			case MAX:
-				break;
-			case BACK_PASS_LEFT: // Falta: recuo para o goleiro do time left
-				break;
-			case BACK_PASS_RIGHT: // Falta: recuo para o goleiro do time right
-				break;
-			case FREE_KICK_FAULT_LEFT:
-				break;
-			case FREE_KICK_FAULT_RIGHT:
-				break;
-			case INDIRECT_FREE_KICK_LEFT: // Cobrança indireta para o time left (2 toques)
-				break;
-			case INDIRECT_FREE_KICK_RIGHT: // Cobrança indireta para o time right (2 toques)
-				break;
-		}*/
 			updatePerceptions(); //non-blocking
 		}
 
 		System.out.println(">> 4. Finalizado!");
 	}
 
-	private BTNode<BehaviorTreePlayer> buildTree_Goleiro() {
+	private BTNode<BehaviorTreePlayer> buildTree(BTNode<BehaviorTreePlayer> playerBehaviorTree) {
+		Selector<BehaviorTreePlayer> raiz = new Selector<BehaviorTreePlayer>("RAIZ-STATES");
+
+		/*Adicao dos comportamentos do jogador*/
+		Sequence<BehaviorTreePlayer> playOn = new Sequence<BehaviorTreePlayer>("PLAY ON");
+		playOn.add(new PlayOn());
+		playOn.add(playerBehaviorTree);  //adicionar behavior tree padrao dos jogadores
+
+		/*tratamento dos ESTADOS do jogo*/
+		raiz.add(playOn);
+		raiz.add(new BeforeKickOff_AfterGoal());
+		raiz.add(new KickOff());
+		raiz.add(new CornerKick());
+		raiz.add(new FreeKick());
+		raiz.add(new FreeKickFault());
+		raiz.add(new GoalKick());
+		raiz.add(new IndirectFreeKick());
+		raiz.add(new KickIn());
+		raiz.add(new KickOff());
+		raiz.add(new Offside());
+		raiz.add(new TimeOver());
+
+		return raiz;
+	}
+
+	private BTNode<BehaviorTreePlayer> Goleiro() {
 		Selector<BehaviorTreePlayer> raiz = new Selector<BehaviorTreePlayer>("RAIZ");
 
 		Sequence<BehaviorTreePlayer> bolaNaArea = new Sequence<BehaviorTreePlayer>("Bola-Na-Area");
@@ -178,7 +127,7 @@ public class BehaviorTreePlayer extends Thread {
 		
 		
 //		raiz.add(beforeKickOff);
-		BTNode<BehaviorTreePlayer> beforekickoff = new IfStatusIsBeforeKickOff();
+		BTNode<BehaviorTreePlayer> beforekickoff = new BeforeKickOff_AfterGoal();
 		
 		raiz.add(bolaNaArea);
 		raiz.add(bolaForaDaArea);
@@ -186,7 +135,7 @@ public class BehaviorTreePlayer extends Thread {
 		return raiz;
 	}
 
-	private BTNode<BehaviorTreePlayer> buildTree_Meia() {
+	private BTNode<BehaviorTreePlayer> Meia() {
 		Selector<BehaviorTreePlayer> raiz = new Selector<BehaviorTreePlayer>("RAIZ");
 
 		Sequence<BehaviorTreePlayer> tocarBola = new Sequence<BehaviorTreePlayer>("Bola-Na-Area");
@@ -202,7 +151,7 @@ public class BehaviorTreePlayer extends Thread {
 		defaultTreeRetreat.add(new IfBallIsWithOpponent());
 		defaultTreeRetreat.add(new RetreatAccordingToHomePosition());
 		
-		BTNode<BehaviorTreePlayer> beforekickoff = new IfStatusIsBeforeKickOff();
+		BTNode<BehaviorTreePlayer> beforekickoff = new BeforeKickOff_AfterGoal();
 		
 		raiz.add(tocarBola);
 		raiz.add(defaultTreeAdvance);
@@ -211,7 +160,7 @@ public class BehaviorTreePlayer extends Thread {
 		return raiz;
 	}
 
-	private BTNode<BehaviorTreePlayer> buildTree_LateralDireito() {
+	private BTNode<BehaviorTreePlayer> LateralDireito() {
 		Selector<BehaviorTreePlayer> raiz = new Selector<BehaviorTreePlayer>("RAIZ");
 
 		Sequence<BehaviorTreePlayer> tocarBola = new Sequence<BehaviorTreePlayer>("Bola-Na-Area");
@@ -227,7 +176,7 @@ public class BehaviorTreePlayer extends Thread {
 		defaultTreeRetreat.add(new IfBallIsWithOpponent());
 		defaultTreeRetreat.add(new RetreatAccordingToHomePosition());
 		
-		BTNode<BehaviorTreePlayer> beforekickoff = new IfStatusIsBeforeKickOff();
+		BTNode<BehaviorTreePlayer> beforekickoff = new BeforeKickOff_AfterGoal();
 		
 		raiz.add(tocarBola);
 		raiz.add(defaultTreeAdvance);
@@ -236,7 +185,7 @@ public class BehaviorTreePlayer extends Thread {
 		return raiz;
 }
 
-	private BTNode<BehaviorTreePlayer> buildTree_ZagueiroDireito() {
+	private BTNode<BehaviorTreePlayer> ZagueiroDireito() {
 		Selector<BehaviorTreePlayer> raiz = new Selector<BehaviorTreePlayer>("RAIZ");
 
 		Sequence<BehaviorTreePlayer> tocarBola = new Sequence<BehaviorTreePlayer>("Bola-Na-Area");
@@ -252,7 +201,7 @@ public class BehaviorTreePlayer extends Thread {
 		defaultTreeRetreat.add(new IfBallIsWithOpponent());
 		defaultTreeRetreat.add(new RetreatAccordingToHomePosition());
 		
-		BTNode<BehaviorTreePlayer> beforekickoff = new IfStatusIsBeforeKickOff();
+		BTNode<BehaviorTreePlayer> beforekickoff = new BeforeKickOff_AfterGoal();
 		
 		raiz.add(tocarBola);
 		raiz.add(defaultTreeAdvance);
@@ -262,7 +211,7 @@ public class BehaviorTreePlayer extends Thread {
 	}
 
 
-	private BTNode<BehaviorTreePlayer> buildTree_AtacanteDireito() {
+	private BTNode<BehaviorTreePlayer> AtacanteDireito() {
 		Selector<BehaviorTreePlayer> raiz = new Selector<BehaviorTreePlayer>("RAIZ");
 
 		Sequence<BehaviorTreePlayer> attackTree = new Sequence<BehaviorTreePlayer>("Avanca-para-Gol");
@@ -276,7 +225,7 @@ public class BehaviorTreePlayer extends Thread {
 
 		BTNode<BehaviorTreePlayer> defaultTree = new ReturnToHomePosition();
 		
-		BTNode<BehaviorTreePlayer> beforekickoff = new IfStatusIsBeforeKickOff();
+		BTNode<BehaviorTreePlayer> beforekickoff = new BeforeKickOff_AfterGoal();
 		
 		raiz.add(attackTree);
 		raiz.add(deffensiveTree);
@@ -285,7 +234,7 @@ public class BehaviorTreePlayer extends Thread {
 		return raiz;
 	}
 
-	private BTNode<BehaviorTreePlayer> buildTree_LateralEsquerdo() {
+	private BTNode<BehaviorTreePlayer> LateralEsquerdo() {
 		Selector<BehaviorTreePlayer> raiz = new Selector<BehaviorTreePlayer>("RAIZ");
 
 		Sequence<BehaviorTreePlayer> tocarBola = new Sequence<BehaviorTreePlayer>("Bola-Na-Area");
@@ -301,7 +250,7 @@ public class BehaviorTreePlayer extends Thread {
 		defaultTreeRetreat.add(new IfBallIsWithOpponent());
 		defaultTreeRetreat.add(new RetreatAccordingToHomePosition());
 		
-		BTNode<BehaviorTreePlayer> beforekickoff = new IfStatusIsBeforeKickOff();
+		BTNode<BehaviorTreePlayer> beforekickoff = new BeforeKickOff_AfterGoal();
 		
 		raiz.add(tocarBola);
 		raiz.add(defaultTreeAdvance);
@@ -310,7 +259,7 @@ public class BehaviorTreePlayer extends Thread {
 		return raiz;
 	}
 
-	private BTNode<BehaviorTreePlayer> buildTree_ZagueiroEsquerdo() {
+	private BTNode<BehaviorTreePlayer> ZagueiroEsquerdo() {
 		Selector<BehaviorTreePlayer> raiz = new Selector<BehaviorTreePlayer>("RAIZ");
 
 		Sequence<BehaviorTreePlayer> tocarBola = new Sequence<BehaviorTreePlayer>("Bola-Na-Area");
@@ -326,7 +275,7 @@ public class BehaviorTreePlayer extends Thread {
 		defaultTreeRetreat.add(new IfBallIsWithOpponent());
 		defaultTreeRetreat.add(new RetreatAccordingToHomePosition());
 		
-		BTNode<BehaviorTreePlayer> beforekickoff = new IfStatusIsBeforeKickOff();
+		BTNode<BehaviorTreePlayer> beforekickoff = new BeforeKickOff_AfterGoal();
 		
 		raiz.add(tocarBola);
 		raiz.add(defaultTreeAdvance);
@@ -335,7 +284,7 @@ public class BehaviorTreePlayer extends Thread {
 		return raiz;
 	}
 
-	private BTNode<BehaviorTreePlayer> buildTree_AtacanteEsquerdo() {
+	private BTNode<BehaviorTreePlayer> AtacanteEsquerdo() {
 		Selector<BehaviorTreePlayer> raiz = new Selector<BehaviorTreePlayer>("RAIZ");
 
 		Sequence<BehaviorTreePlayer> attackTree = new Sequence<BehaviorTreePlayer>("Avanca-para-Gol");
@@ -349,7 +298,7 @@ public class BehaviorTreePlayer extends Thread {
 
 		BTNode<BehaviorTreePlayer> defaultTree = new ReturnToHomePosition();
 		
-		BTNode<BehaviorTreePlayer> beforekickoff = new IfStatusIsBeforeKickOff();
+		BTNode<BehaviorTreePlayer> beforekickoff = new BeforeKickOff_AfterGoal();
 		
 		raiz.add(attackTree);
 		raiz.add(deffensiveTree);
@@ -357,6 +306,8 @@ public class BehaviorTreePlayer extends Thread {
 		raiz.add(beforekickoff);
 		return raiz;
 	}
+
+
 
 	private void updatePerceptionsBlocking() {
 		PlayerPerception newSelf = commander.perceiveSelfBlocking();

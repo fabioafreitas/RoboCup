@@ -34,7 +34,7 @@ public class PassBall extends BTNode<BehaviorTreePlayer> {
 
         //buscando jogador mais proximo
         for (PlayerPerception player : myTeam) {
-            double playerDistance = player.getPosition().distanceTo(ballPosition);
+            double playerDistance = player.getPosition().distanceTo(agent.getSelfPerc().getPosition());
             if (playerDistance < closestDistance) {
                 closestDistance = playerDistance;
                 closestPlayer = player;

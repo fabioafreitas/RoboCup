@@ -10,10 +10,10 @@ import ufrpe.behavior_tree.BTStatus;
  * se o estado da partida e GoalKick
  * e Failure se nao eh
  * */
-public class GoalKickLeft extends BTNode<BehaviorTreePlayer> {
+public class GoalKick extends BTNode<BehaviorTreePlayer> {
     @Override
     public BTStatus tick(BehaviorTreePlayer agent) {
         //TODO falta definir a acao a ser tomada
-        return agent.getMatchPerc().getState() == EMatchState.GOAL_KICK_LEFT ? BTStatus.SUCCESS : BTStatus.FAILURE;
+        return agent.getMatchPerc().getState() == EMatchState.GOAL_KICK_RIGHT ? BTStatus.SUCCESS : BTStatus.FAILURE;
     }
 }

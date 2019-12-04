@@ -13,7 +13,7 @@ import ufrpe.behavior_tree.BTStatus;
 public class PlayOn extends BTNode<BehaviorTreePlayer> {
     @Override
     public BTStatus tick(BehaviorTreePlayer agent) {
-        //TODO falta definir a acao a ser tomada
-        return agent.getMatchPerc().getState() == EMatchState.PLAY_ON ? BTStatus.SUCCESS : BTStatus.FAILURE;
+        return agent.getMatchPerc().getState() == EMatchState.PLAY_ON ?
+                BTStatus.SUCCESS : BTStatus.FAILURE;
     }
 }
