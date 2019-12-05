@@ -18,22 +18,6 @@ public class BeforeKickOff extends BTNode<BehaviorTreePlayer>{
 		EMatchState state = agent.getMatchPerc().getState();
 
 		if(state == EMatchState.BEFORE_KICK_OFF) {
-			EFieldSide side = agent.getSelfPerc().getSide();
-			Vector2D homePosition = agent.getHomePosition();
-
-			if(side == EFieldSide.RIGHT) {
-				homePosition.setX(-homePosition.getX());
-				homePosition.setY(-homePosition.getY());
-			}
-
-			//Este if serve para evitar de recolocar o jogador na home position, caso ele
-			//ja esteja posicionado nela. Economiza processamento do servidor
-			Vector2D currentPos = agent.getSelfPerc().getPosition();
-			if(homePosition.getX() == currentPos.getX() && homePosition.getY() == currentPos.getY()) {
-				return BTStatus.SUCCESS;
-			}
-
-			agent.getCommander().doMoveBlocking(homePosition.getX(), homePosition.getY());
 			return BTStatus.SUCCESS;
 		}
 		return  BTStatus.FAILURE;

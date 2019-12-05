@@ -15,10 +15,10 @@ public class MovePlayerToKickOff extends BTNode<BehaviorTreePlayer> {
         EFieldSide side = agent.getSelfPerc().getSide();
         Vector2D homePosition = agent.getSelfPerc().getPosition();
 
-        if(side == EFieldSide.LEFT) { //tomou um gol
+        if(side == EFieldSide.RIGHT) { //tomou um gol
             posicionarTimeParaKickOff(agent);
         }
-        else if(side == EFieldSide.RIGHT) { //fez um gol
+        else if(side == EFieldSide.LEFT) { //fez um gol
             posicionarJogadorEmPonto(agent, homePosition);
         }
 
