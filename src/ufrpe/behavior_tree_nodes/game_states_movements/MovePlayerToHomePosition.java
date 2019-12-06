@@ -16,7 +16,7 @@ public class MovePlayerToHomePosition extends BTNode<BehaviorTreePlayer> {
 
         if(side == EFieldSide.RIGHT) {
             homePosition.setX(-homePosition.getX());
-            homePosition.setY(-homePosition.getY());
+            homePosition.setY(-homePosition.getY()); 
         }
 
         //Este if serve para evitar de recolocar o jogador na home position, caso ele

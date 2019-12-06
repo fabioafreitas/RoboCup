@@ -31,7 +31,7 @@ public class MovePlayerToKickOff extends BTNode<BehaviorTreePlayer> {
         int numeroCamisa = agent.getSelfPerc().getUniformNumber();
         if(numeroCamisa == 7) {
             posicionarJogadorEmPonto(agent, new Vector2D(-4, 4));
-        }
+        } 
         else if(numeroCamisa == 8) {
             posicionarJogadorEmPonto(agent, new Vector2D(-2, -1));
         }

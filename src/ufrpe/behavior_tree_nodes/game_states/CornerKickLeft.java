@@ -14,7 +14,9 @@ public class CornerKickLeft extends BTNode<BehaviorTreePlayer> {
     @Override
     public BTStatus tick(BehaviorTreePlayer agent) {
         EMatchState state = agent.getMatchPerc().getState();
-
-        return null;
+        if(state == EMatchState.CORNER_KICK_LEFT) {
+            return BTStatus.SUCCESS;
+        }
+        return BTStatus.FAILURE;
     }
 }

@@ -12,8 +12,8 @@ public class RetreatAccordingToHomePosition extends BTNode<BehaviorTreePlayer> {
         Vector2D homePosition = agent.getHomePosition();
 
         Vector2D inicioDoCampo = (agent.getSelfPerc().getSide() == EFieldSide.LEFT) ?
-                new Vector2D(-52, homePosition.getY()) :
-                new Vector2D(52, homePosition.getY());;
+                new Vector2D(52, homePosition.getY()) :
+                new Vector2D(-52, homePosition.getY());;
 
         //Esta no fim do campo, nao pode mais avancar
         if(agent.isCloseTo(inicioDoCampo, 3)) {

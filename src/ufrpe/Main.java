@@ -11,7 +11,7 @@ public class Main {
 		BehaviorTreeTeam team2 = new BehaviorTreeTeam("Gravida_Taubate");
 
 		team1.launchTeamAndServer();
-  		//team2.launchTeam();
+  		team2.launchTeam();
 
     }
 	

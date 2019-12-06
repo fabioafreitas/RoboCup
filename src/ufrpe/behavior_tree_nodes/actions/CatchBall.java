@@ -14,7 +14,7 @@ public class CatchBall extends BTNode<BehaviorTreePlayer> {
         if (agent.isAlignedTo(ballPos)) {
             agent.getCommander().doDashBlocking(85.0d);
         } else {
-            agent.getCommander().doTurnToPoint(ballPos);
+            agent.getCommander().doTurnToPointBlocking(ballPos);
         }
 
         //condicao desejada: perto da bola (dist < 3)

@@ -6,6 +6,7 @@ import ufrpe.behavior_tree_nodes.conditions.*;
 import ufrpe.behavior_tree_nodes.game_states.*;
 import ufrpe.behavior_tree_nodes.game_states_movements.MovePlayerToHomePosition;
 import ufrpe.behavior_tree_nodes.game_states_movements.MovePlayerToKickOff;
+import ufrpe.behavior_tree_nodes.game_states_movements.MovePlayerToSmallArea;
 import ufrpe.behavior_tree.BTNode;
 import ufrpe.behavior_tree.Selector;
 import ufrpe.behavior_tree.Sequence;
@@ -96,8 +97,8 @@ public class BehaviorTreePlayer extends Thread {
 		raiz.add(freeKick());					//TODO ainda nao funciona mt bem
 		raiz.add(kickOff());					//Completo
 		raiz.add(offside()); 					//Completo
-		//TODO  escanteio (CornerKick)
-		//TODO 	lateral (KickIn)
+		raiz.add(cornerKick());					//TODO  escanteio (CornerKick)
+		raiz.add(kickIn());						//TODO 	lateral (KickIn)
 		//TODO 	GoalKick
 		//TODO  IndirectFreeKick
 		//TODO FreeKickFault
@@ -205,7 +206,44 @@ public class BehaviorTreePlayer extends Thread {
 
 		return offside;
 	}
-
+	
+	private BTNode<BehaviorTreePlayer> cornerKick(){ //TODO
+		Selector<BehaviorTreePlayer> cornerKick = new Selector<BehaviorTreePlayer>("Escanteio");
+		Sequence<BehaviorTreePlayer> cornerKickLeft = new Sequence<BehaviorTreePlayer>("Escanteio esquerda");
+		Sequence<BehaviorTreePlayer> cornerKickRight = new Sequence<BehaviorTreePlayer>("Escanteio direita");
+		cornerKick.add(cornerKickLeft);
+		cornerKick.add(cornerKickRight);
+		
+		cornerKickLeft.add(new CornerKickLeft()); //52x,34y -34y 
+		cornerKickLeft.add(new IfClosestPlayerToBall());
+		cornerKickLeft.add(new MovePlayerToSmallArea());
+		cornerKickLeft.add(new PassBall());
+		
+		cornerKickRight.add(new CornerKickRight()); //-52x,34y -34y 
+		cornerKickRight.add(new IfClosestPlayerToBall());
+		cornerKickRight.add(new MovePlayerToSmallArea());
+		cornerKickRight.add(new PassBall());
+		return cornerKick;
+	}
+	
+	private BTNode<BehaviorTreePlayer> kickIn(){ //TODO
+		Selector<BehaviorTreePlayer> kickIn = new Selector<BehaviorTreePlayer>("Lateral");
+		Sequence<BehaviorTreePlayer> kickInLeft = new Sequence<BehaviorTreePlayer>("Lateral esquerda"); //esquerda cobrar
+		Sequence<BehaviorTreePlayer> kickInRight = new Sequence<BehaviorTreePlayer>("Lateral direita"); //direita cobrar
+		kickIn.add(kickInLeft);
+		kickIn.add(kickInRight);
+		
+		kickInLeft.add(new KickInLeft()); //52x,34y -34y 
+		kickInLeft.add(new PassBall());
+		//kickInLeft.add(new MovePlayerToSmallArea());
+		
+		kickInRight.add(new KickInRight()); //-52x,34y -34y 
+		kickInRight.add(new PassBall());
+		//kickInRight.add(new MovePlayerToSmallArea());
+		
+		return kickIn;
+	}
+	
 	private BTNode<BehaviorTreePlayer> Goleiro() { //Completo
 		Selector<BehaviorTreePlayer> raiz = new Selector<BehaviorTreePlayer>("GOLEIRO");
 

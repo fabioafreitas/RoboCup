@@ -11,8 +11,8 @@ public enum EMatchState {
 	KICK_IN_RIGHT 			(7),
 	FREE_KICK_LEFT 			(8),
 	FREE_KICK_RIGHT 		(9),
-	CORNER_KICK_LEFT 		(10),
-	CORNER_KICK_RIGHT 		(11),
+	CORNER_KICK_LEFT 		(10), //Quando o escanteio é pro time da esquerda
+	CORNER_KICK_RIGHT 		(11), //Quando o escanteio é pro time da direita
 	GOAL_KICK_LEFT 			(12),
 	GOAL_KICK_RIGHT 		(13),
 	AFTER_GOAL_LEFT 		(14),
